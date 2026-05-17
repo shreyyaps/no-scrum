@@ -1,5 +1,3 @@
-from collections.abc import AsyncGenerator
-
 from sqlalchemy.ext.asyncio import (
     AsyncSession,
     async_sessionmaker,
@@ -21,8 +19,3 @@ SessionLocal = async_sessionmaker(engine, expire_on_commit=False, class_=AsyncSe
 # damn this seems important
 class Base(DeclarativeBase):
     pass
-
-
-async def get_db() -> AsyncGenerator[AsyncSession, None]:
-    async with SessionLocal() as session:
-        yield session
