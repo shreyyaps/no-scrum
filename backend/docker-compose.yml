@@ -27,7 +27,11 @@ services:
     volumes:
       - ./app:/app/app
     working_dir: /app/app
-    command: fastapi dev main.py --host 0.0.0.0 --port 8000
+    command: >
+      sh -c "cd /app &&
+      alembic upgrade head &&
+      cd /app/app &&
+      fastapi dev main.py --host 0.0.0.0 --port 8000"
 
 volumes:
   postgres_data:

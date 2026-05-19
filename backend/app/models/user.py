@@ -5,7 +5,7 @@ from typing import TYPE_CHECKING
 from sqlalchemy import String
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
-from core.database import Base
+from db.session import Base
 from models.user_roles import user_roles
 
 if TYPE_CHECKING:

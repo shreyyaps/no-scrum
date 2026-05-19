@@ -9,7 +9,7 @@ from sqlalchemy.engine import Connection
 from sqlalchemy.ext.asyncio import async_engine_from_config
 
 from core.config import settings
-from core.database import Base
+from db.session import Base
 
 import models.organization  # noqa: F401
 import models.organization_user  # noqa: F401

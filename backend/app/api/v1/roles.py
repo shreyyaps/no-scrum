@@ -1,20 +1,13 @@
-from fastapi import APIRouter, Depends, HTTPException, Response, status
+from fastapi import APIRouter, Depends, Response, status
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from dependencies.db import get_db
+from db.session import get_db
 from schemas.role import PermissionCreate, PermissionRead, RoleCreate, RoleRead
 from services import role_service
 from services.exceptions import ConflictError, NotFoundError
+from utils.http_errors import raise_http_error
 
 router = APIRouter()
-
-
-def _raise_http_error(error: Exception) -> None:
-    if isinstance(error, NotFoundError):
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(error))
-    if isinstance(error, ConflictError):
-        raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail=str(error))
-    raise error
 
 
 @router.post("/roles", response_model=RoleRead, status_code=status.HTTP_201_CREATED)
@@ -33,7 +26,7 @@ async def get_role(
     try:
         return await role_service.get_role(db, role_id)
     except NotFoundError as error:
-        _raise_http_error(error)
+        raise_http_error(error)
 
 
 @router.post(
@@ -60,5 +53,5 @@ async def assign_permission_to_role(
     try:
         await role_service.assign_permission_to_role(db, role_id, permission_id)
     except (ConflictError, NotFoundError) as error:
-        _raise_http_error(error)
+        raise_http_error(error)
     return Response(status_code=status.HTTP_204_NO_CONTENT)

@@ -1,7 +1,7 @@
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, status
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from dependencies.db import get_db
+from db.session import get_db
 from schemas.organization import (
     OrganizationCreate,
     OrganizationRead,
@@ -9,16 +9,9 @@ from schemas.organization import (
 )
 from services import org_service
 from services.exceptions import ConflictError, NotFoundError
+from utils.http_errors import raise_http_error
 
 router = APIRouter()
-
-
-def _raise_http_error(error: Exception) -> None:
-    if isinstance(error, NotFoundError):
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(error))
-    if isinstance(error, ConflictError):
-        raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail=str(error))
-    raise error
 
 
 @router.post("", response_model=OrganizationRead, status_code=status.HTTP_201_CREATED)
@@ -37,7 +30,7 @@ async def get_organization(
     try:
         return await org_service.get_organization(db, organization_id)
     except NotFoundError as error:
-        _raise_http_error(error)
+        raise_http_error(error)
 
 
 @router.post(
@@ -57,7 +50,7 @@ async def assign_user_to_organization(
             organization_id=organization_id,
         )
     except (ConflictError, NotFoundError) as error:
-        _raise_http_error(error)
+        raise_http_error(error)
 
 
 @router.get("/{organization_id}/users", response_model=list[OrganizationUserRead])
@@ -68,4 +61,4 @@ async def list_organization_users(
     try:
         return await org_service.list_organization_users(db, organization_id)
     except NotFoundError as error:
-        _raise_http_error(error)
+        raise_http_error(error)

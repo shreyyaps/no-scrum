@@ -1,3 +1,5 @@
+from collections.abc import AsyncGenerator
+
 from sqlalchemy.ext.asyncio import (
     AsyncSession,
     async_sessionmaker,
@@ -7,15 +9,22 @@ from sqlalchemy.orm import DeclarativeBase
 
 from core.config import settings
 
-engine = create_async_engine(settings.database_url,                   
+engine = create_async_engine(
+    settings.database_url,
     pool_size=10,
     max_overflow=20,
     pool_timeout=30,
     echo=False,
-    future=True)
+    future=True,
+)
 
 SessionLocal = async_sessionmaker(engine, expire_on_commit=False, class_=AsyncSession)
 
-# damn this seems important
+
 class Base(DeclarativeBase):
     pass
+
+
+async def get_db() -> AsyncGenerator[AsyncSession, None]:
+    async with SessionLocal() as session:
+        yield session
