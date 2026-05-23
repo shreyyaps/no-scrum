@@ -60,7 +60,7 @@ dist/
 next-env.d.ts
 
 # ── Claude Code (local-only) ───────────────────────
-.claude/settings.local.json
+.claude
 AGENTS.md
 CLAUDE.md
 settings.json
