@@ -1,3 +1,5 @@
+name: noscrum
+
 services:
   postgres-noscrum:
     image: postgres:16-alpine
@@ -18,7 +20,7 @@ services:
   backend-noscrum:
     build: .
     environment:
-      DATABASE_URL: postgresql+asyncpg://postgres:postgres@postgres:5432/app
+      DATABASE_URL: postgresql+asyncpg://postgres:postgres@postgres-noscrum:5432/app
     ports:
       - "8000:8000"
     depends_on:
@@ -35,3 +37,6 @@ services:
 
 volumes:
   postgres_data:
+    # Pin to the volume created under the old project name ("backend") so the
+    # existing data survives the rename to project "noscrum".
+    name: backend_postgres_data
