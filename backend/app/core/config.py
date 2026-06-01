@@ -1,5 +1,6 @@
 from pathlib import Path
 
+from pydantic import Field
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 # backend/.env — resolved relative to this file (backend/app/core/config.py) so it
@@ -13,7 +14,7 @@ class Settings(BaseSettings):
     model_config = SettingsConfigDict(env_file=ENV_FILE, extra="ignore")
 
     app_name: str = "no-scrum-backend"
-    database_url: str = "postgresql+asyncpg://postgres:postgres@localhost:5432/app"
+    database_url: str  = Field(default="...")
 
 
 settings = Settings()

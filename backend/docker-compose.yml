@@ -1,5 +1,5 @@
 services:
-  postgres:
+  postgres-noscrum:
     image: postgres:16-alpine
     environment:
       POSTGRES_USER: postgres
@@ -15,14 +15,14 @@ services:
       timeout: 5s
       retries: 5
 
-  backend:
+  backend-noscrum:
     build: .
     environment:
       DATABASE_URL: postgresql+asyncpg://postgres:postgres@postgres:5432/app
     ports:
       - "8000:8000"
     depends_on:
-      postgres:
+      postgres-noscrum:
         condition: service_healthy
     volumes:
       - ./app:/app/app
