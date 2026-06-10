@@ -3,6 +3,7 @@ from pydantic import BaseModel, ConfigDict
 
 class OrganizationCreate(BaseModel):
     name: str
+    description: str | None = None
 
 
 class OrganizationRead(BaseModel):
@@ -10,6 +11,7 @@ class OrganizationRead(BaseModel):
 
     id: int
     name: str
+    description: str | None
 
 
 class OrganizationUserRead(BaseModel):

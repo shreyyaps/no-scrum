@@ -3,6 +3,7 @@ from pydantic import BaseModel, ConfigDict
 
 class RoleCreate(BaseModel):
     name: str
+    description: str | None = None
 
 
 class RoleRead(BaseModel):
@@ -10,10 +11,12 @@ class RoleRead(BaseModel):
 
     id: int
     name: str
+    description: str | None
 
 
 class PermissionCreate(BaseModel):
     name: str
+    description: str | None = None
 
 
 class PermissionRead(BaseModel):
@@ -21,3 +24,4 @@ class PermissionRead(BaseModel):
 
     id: int
     name: str
+    description: str | None

@@ -8,7 +8,11 @@ from services.exceptions import ConflictError, NotFoundError
 
 
 async def create_role(db: AsyncSession, payload: RoleCreate) -> Role:
-    role = await role_repo.create_role(db, payload.name)
+    role = await role_repo.create_role(
+        db,
+        name=payload.name,
+        description=payload.description,
+    )
     await db.commit()
     await db.refresh(role)
     return role
@@ -25,7 +29,11 @@ async def create_permission(
     db: AsyncSession,
     payload: PermissionCreate,
 ) -> Permission:
-    permission = await role_repo.create_permission(db, payload.name)
+    permission = await role_repo.create_permission(
+        db,
+        name=payload.name,
+        description=payload.description,
+    )
     await db.commit()
     await db.refresh(permission)
     return permission

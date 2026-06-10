@@ -5,8 +5,13 @@ from models.user import User
 from models.user_roles import user_roles
 
 
-async def create(db: AsyncSession, email: str) -> User:
-    user = User(email=email)
+async def create(
+    db: AsyncSession,
+    email: str,
+    name: str | None = None,
+    age: int | None = None,
+) -> User:
+    user = User(email=email, name=name, age=age)
     db.add(user)
     await db.flush()
     return user
