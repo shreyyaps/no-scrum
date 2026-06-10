@@ -5,8 +5,12 @@ from models.organization import Organization
 from models.organization_user import OrganizationUser
 
 
-async def create(db: AsyncSession, name: str) -> Organization:
-    organization = Organization(name=name)
+async def create(
+    db: AsyncSession,
+    name: str,
+    description: str | None = None,
+) -> Organization:
+    organization = Organization(name=name, description=description)
     db.add(organization)
     await db.flush()
     return organization

@@ -11,7 +11,12 @@ async def create_user(db: AsyncSession, payload: UserCreate) -> User:
     if organization is None:
         raise NotFoundError("Organization not found")
 
-    user = await user_repo.create(db, str(payload.email))
+    user = await user_repo.create(
+        db,
+        email=str(payload.email),
+        name=payload.name,
+        age=payload.age,
+    )
     await organization_repo.create_membership(
         db=db,
         user_id=user.id,

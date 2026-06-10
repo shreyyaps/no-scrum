@@ -6,8 +6,12 @@ from models.role import Role
 from models.role_permissions import role_permissions
 
 
-async def create_role(db: AsyncSession, name: str) -> Role:
-    role = Role(name=name)
+async def create_role(
+    db: AsyncSession,
+    name: str,
+    description: str | None = None,
+) -> Role:
+    role = Role(name=name, description=description)
     db.add(role)
     await db.flush()
     return role
@@ -17,8 +21,12 @@ async def get_role_by_id(db: AsyncSession, role_id: int) -> Role | None:
     return await db.get(Role, role_id)
 
 
-async def create_permission(db: AsyncSession, name: str) -> Permission:
-    permission = Permission(name=name)
+async def create_permission(
+    db: AsyncSession,
+    name: str,
+    description: str | None = None,
+) -> Permission:
+    permission = Permission(name=name, description=description)
     db.add(permission)
     await db.flush()
     return permission

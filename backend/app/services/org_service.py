@@ -11,7 +11,11 @@ async def create_organization(
     db: AsyncSession,
     payload: OrganizationCreate,
 ) -> Organization:
-    organization = await organization_repo.create(db, payload.name)
+    organization = await organization_repo.create(
+        db,
+        name=payload.name,
+        description=payload.description,
+    )
     await db.commit()
     await db.refresh(organization)
     return organization
